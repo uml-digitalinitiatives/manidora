@@ -421,12 +421,9 @@ function __manidora_whats_new_content() {
   module_load_include('inc', 'islandora_restricted', 'includes/utilities');
   $solr_build = new IslandoraSolrQueryProcessor();
 
-  $path_parts = parse_url(variable_get('islandora_solr_url', 'localhost:8080/solr'));
-  $solr = new Apache_Solr_Service($path_parts['host'], $path_parts['port'], $path_parts['path'] . '/');
-
-  $query = 'dc.title:[ * TO * ]';
+  $query = 'fgs_label_s:*';
   $params = array(
-    'fl' => 'PID,dc.title,fgs_createdDate_s,fedora_datastreams_ms,RELS_EXT_canSeeRestricted_uri_ms,RELS_EXT_restrictedState_literal_ms',
+    'fl' => 'PID,fgs_label_s,fgs_createdDate_s,fedora_datastreams_ms,RELS_EXT_canSeeRestricted_uri_ms,RELS_EXT_restrictedState_literal_ms',
     'sort' => 'fgs_createdDate_s desc',
     'fq' => array(
       '-RELS_EXT_hasModel_uri_ms:("info:fedora/islandora:newspaperPageCModel" "info:fedora/islandora:pageCModel")',
@@ -436,7 +433,6 @@ function __manidora_whats_new_content() {
     'rows' => 4,
     'limit' => 4,
   );
-  $solr->setCreateDocuments(0);
   $solr_build->buildQuery($query, $params);
 
   $solr_build->solrParams = array_merge_recursive($solr_build->solrParams, $params);
@@ -449,27 +445,15 @@ function __manidora_whats_new_content() {
     }
   }
   try {
-    $solr_query = ($solr_build->internalSolrQuery) ? $solr_build->internalSolrQuery : $solr_build->solrQuery;
-    $method = 'GET';
-    $results = $solr->search($solr_query, $solr_build->solrStart, $solr_build->solrParams['rows'], $solr_build->solrParams, $method);
-    $solr_results = json_decode($results->getRawResponse(), TRUE);
+    $solr_build->executeQuery();
   }
   catch (Exception $e) {
     drupal_set_message(check_plain(t('Error searching Solr index')) . ' ' . $e->getMessage(), 'error');
   }
   $output = "<div class=\"manidora-whats-new-content\">";
-  $map = function($o) {
-    return array(
-      'pid' => $o['PID'],
-      'title' => $o['dc.title'][0],
-      'date' => $o['fgs_createdDate_s'],
-    );
-  };
-  if ($solr_results) {
-    $results = array_map($map, $solr_results['response']['docs']);
-    foreach ($results as $result) {
-      $output .= theme('manidora_whats_new_item', array('item' => $result));
-    }
+  $results = $solr_build->islandoraSolrResult;
+  foreach ($results as $result) {
+    $output .= theme('manidora_whats_new_item', array('item' => $result));
   }
   $output .= "</div>";
   return $output;
@@ -484,30 +468,20 @@ function manidora_preprocess_manidora_whats_new_item(&$variables) {
 
   $new_item = array();
   $item = $variables['item'];
-  $object = islandora_object_load($item['pid']);
+  $object = islandora_object_load($item['PID']);
   if ($object) {
-    $variables['pid'] = $item['pid'];
-    $tstamp = DateTime::createFromFormat('Y-m-d\TH:i:s.uZ', $item['date']);
+    $variables['PID'] = $item['PID'];
+    $tstamp = DateTime::createFromFormat('Y-m-d\TH:i:s.uZ', $item['solr_doc']['fgs_createdDate_s']);
     $variables['timestamp'] = $tstamp;
-    $title = $item['title'];
-    if (!islandora_restricted_user_has_access($object, $user)) {
-      $title .= " - Restricted";
-      $image_path = drupal_get_path('module', 'islandora_restricted') . '/images/access_denied.png';
-    }
-    elseif (isset($object['TN'])) {
-      $image_path = 'islandora/object/' . $item['pid'] . '/datastream/TN/view';
-    }
-    else {
-      $image_path = drupal_get_path('module', 'islandora', '/images/folder.png');
-    }
+    $title = $item['object_label'];
     $stitle = (strlen($title) > 30 ? substr($title, 0, strpos(wordwrap($title, 25, '~'), '~')) . '...' : $title);
-    $variables['title'] = $title;
+    $variables['title'] = $item['object_label'];
     $variables['image'] = t('<a href="@link"><img src="@url" alt="@title" class="featured-thumb"/></a>', array(
-      '@url' => url($image_path),
+      '@url' => url($item['thumbnail_url']),
       '@title' => $stitle,
-      '@link' => url('islandora/object/' . $item['pid']),
+      '@link' => $item['object_url'],
     ));
-    $variables['link'] = l($stitle, 'islandora/object/' . $item['pid']);
+    $variables['link'] = l($stitle, $item['object_url']);
   }
   unset($variables['item']);
 }

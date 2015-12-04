@@ -910,7 +910,8 @@ function manidora_metadata_markup_callback(AbstractObject $object, $print) {
   $output = "";
   if ($print) {
     module_load_include('inc', 'manidora', 'includes/metadata');
-    $output = drupal_render(manidora_retrieve_metadata_form($object));
+    $form = manidora_retrieve_metadata_form($object);
+    $output = drupal_render($form);
   }
   return $output;
 }

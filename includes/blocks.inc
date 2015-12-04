@@ -421,7 +421,7 @@ function __manidora_whats_new_content() {
   module_load_include('inc', 'islandora_restricted', 'includes/utilities');
   $solr_build = new IslandoraSolrQueryProcessor();
 
-  $query = 'fgs_label_s:*';
+  $query = 'fgs_label_s:* AND fgs_createdDate_s:*';
   $params = array(
     'fl' => 'PID,fgs_label_s,fgs_createdDate_s,fedora_datastreams_ms,RELS_EXT_canSeeRestricted_uri_ms,RELS_EXT_restrictedState_literal_ms',
     'sort' => 'fgs_createdDate_s desc',
@@ -451,7 +451,7 @@ function __manidora_whats_new_content() {
     drupal_set_message(check_plain(t('Error searching Solr index')) . ' ' . $e->getMessage(), 'error');
   }
   $output = "<div class=\"manidora-whats-new-content\">";
-  $results = $solr_build->islandoraSolrResult;
+  $results = $solr_build->islandoraSolrResult['response']['objects'];
   foreach ($results as $result) {
     $output .= theme('manidora_whats_new_item', array('item' => $result));
   }

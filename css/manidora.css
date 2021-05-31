@@ -105,6 +105,11 @@
     cursor: move;
 }
 
+#block-manidora-manidora-preview-image img {
+    max-width: 110px;
+    max-height: 110px;
+}
+
 .block ul.manidora-omit-collections-list {
     list-style: none outside;
     margin-left: 0px;

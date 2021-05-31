@@ -623,7 +623,7 @@
               </xsl:apply-templates>
             </xsl:otherwise>
           </xsl:choose>
-          <xsl:if test="position() &gt; last()">, </xsl:if>
+          <xsl:if test="position() &lt; last()">, </xsl:if>
         </xsl:for-each>
       </xsl:with-param>
       <xsl:with-param name="property">dc:language</xsl:with-param>

@@ -94,18 +94,18 @@ function __manidora_homepage_tabs_content() {
     "Images" => array(
       "solr_field" => "type_of_resource_facet_ms",
       "data" => array(
-        "glass lantern slide",
-        "photograph",
-        "slide",
-        "stereo photograph",
-        "still image",
+        "Glass lantern slide",
+        "Photograph",
+        "Slide",
+        "Stereo photograph",
+        "Still image",
       ),
     ),
     "Text" => array(
       "solr_field" => "type_of_resource_facet_ms",
       "data" => array(
-        "text",
-        "textual record",
+        "Text",
+        "Textual record",
       ),
     ),
     "Newspapers" => array(
@@ -125,20 +125,20 @@ function __manidora_homepage_tabs_content() {
       "solr_field" => "type_of_resource_facet_ms",
       // "solr_field" => "dc.type",
       "data" => array(
-        "moving image",
+        "Moving image",
       ),
     ),
     "Sound recordings" => array(
       "solr_field" => "type_of_resource_facet_ms",
       "data" => array(
-        "sound recording",
-        "sound recording - nonmusical",
+        "Sound recording",
+        "Sound recording - nonmusical",
       ),
     ),
     "Mixed material" => array(
       "solr_field" => "type_of_resource_facet_ms",
       "data" => array(
-        "mixed material",
+        "Mixed material",
       ),
     ),
   );

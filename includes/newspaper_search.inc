@@ -135,7 +135,7 @@ function manidora_newspaper_search_form($form, &$form_state) {
   );
   $form['mid_column']['select_all'] = array(
     '#type' => 'markup',
-    '#markup' => '<span id="manidora-newspaper-search-select-all"><a href="javascript://" onclick="jQuery(\'#edit-titles input:checkbox\').attr(\'checked\',\'checked\');">' . t('Select') . '</a>/<a href="javascript://" onclick="jQuery(\'#edit-titles input:checkbox\').removeAttr(\'checked\');">' . t('Deselect') . '</a> all titles</span>',
+    '#markup' => '<span><a id="manidora-newspaper-search-select-all" href="javascript://">' . t('Select') . '</a></span>/<span ><a id="manidora-newspaper-search-select-none" href="javascript://">' . t('Deselect') . '</a> all titles</span>',
   );
   $form['mid_column']['browse'] = array(
     '#type' => 'markup',
@@ -168,6 +168,13 @@ function manidora_newspaper_search_form($form, &$form_state) {
       '#value' => $all_years['max'],
     );
   }
+  $form['#attached']['js'][] = array(
+    'type' => 'inline',
+    'data' => 'jQuery(document).ready(function () { jQuery("#manidora-newspaper-search-select-all").click(function() { jQuery("#edit-titles input:checkbox").prop("checked","checked");}); jQuery("#manidora-newspaper-search-select-none").click(function() { jQuery("#edit-titles input:checkbox").removeAttr("checked");});});',
+    'scope' => 'footer',
+    'group' => JS_THEME,
+    'weight' => 5,
+  );
 
   drupal_set_title(t('Newspaper Search'));
   drupal_set_breadcrumb(array());

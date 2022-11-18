@@ -124,11 +124,13 @@ class XMLPatcher {
      *   The XPath to the node to replace.
      * @param string $new_xml
      *   The new XML element to insert.
+     * @param bool $insert_ns
+     *   Whether to insert the namespace prefixes directly on the element.
      *
      * @return void
      */
     private function replace($old_xpath, $new_xml, $insert_ns = FALSE) {
-      $hits = $this->xpath->query($old_xpath);
+      $hits = $this->xpath->query($old_xpath, null, false);
       if ($hits && count($hits) > 0) {
         if ($insert_ns) {
           $new_xml = XMLPatcher::insert_namespaces($new_xml, $this->namespaces);

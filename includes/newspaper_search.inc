@@ -86,84 +86,92 @@ function manidora_newspaper_search_form($form, &$form_state) {
   );
 
   $form = array(
-    'left_column' => array(
+    'wrapper' => array(
       '#type' => 'container',
-      '#attributes' => array('class' => array('column-split-50')),
-    ),
-    'mid_column' => array(
-      '#type' => 'container',
-      '#attributes' => array('class' => array('column-split-25')),
-    ),
-    'right_column' => array(
-      '#type' => 'container',
-      '#attributes' => array('class' => array('column-split-25')),
+      '#attributes' => array('class' => array('column-container')),
+      'left_column' => array(
+        '#type' => 'container',
+        '#attributes' => array('class' => array('column-split-50')),
+      ),
+      'mid_column' => array(
+        '#type' => 'container',
+        '#attributes' => array('class' => array('column-split-25')),
+      ),
+      'right_column' => array(
+        '#type' => 'container',
+        '#attributes' => array('class' => array('column-split-25')),
+      ),
+      'submit' => array(
+        '#type' => 'submit',
+        '#value' => t('Search'),
+        '#submit' => array('manidora_newspaper_search_form_submit'),
+      ),
     ),
   );
+  
+  // Allows us to shorten the below lines
+  $f =& $form['wrapper'];
 
-  $form['left_column']['exact_phrase'] = array(
+  $f['left_column']['exact_phrase'] = array(
     '#type' => 'textfield',
     '#title' => t('With the exact phrase'),
     '#size' => 50,
   );
-  $form['left_column']['least_one'] = array(
+  $f['left_column']['least_one'] = array(
     '#type' => 'textfield',
     '#title' => t('With at least one of the words'),
     '#size' => 50,
   );
-  $form['left_column']['all_words'] = array(
+  $f['left_column']['all_words'] = array(
     '#type' => 'textfield',
     '#title' => t('With all of the words'),
     '#size' => 50,
   );
-  $form['left_column']['without_words'] = array(
+  $f['left_column']['without_words'] = array(
     '#type' => 'textfield',
     '#title' => t('Without these words'),
     '#suffix' => '<p class="without-words-suffix">' . t('If you are searching for "Winnipeg football" but want to exclude references to the Winnipeg Blue Bombers in your search results, you would enter the words "Blue Bombers" in this box.') . '</p>',
     '#size' => 50,
   );
-  $form['left_column']['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Search'),
-    '#submit' => array('manidora_newspaper_search_form_submit'),
-  );
+  
 
-  $form['mid_column']['titles'] = array(
+  $f['mid_column']['titles'] = array(
     '#type' => 'checkboxes',
     '#title' => t('Limit to only these titles'),
     '#options' => $tmpobjects,
     // '#default_value' => array_keys($tmpobjects),
   );
-  $form['mid_column']['select_all'] = array(
+  $f['mid_column']['select_all'] = array(
     '#type' => 'markup',
     '#markup' => '<span><a id="manidora-newspaper-search-select-all" href="javascript://">' . t('Select') . '</a></span>/<span ><a id="manidora-newspaper-search-select-none" href="javascript://">' . t('Deselect') . '</a> all titles</span>',
   );
-  $form['mid_column']['browse'] = array(
+  $f['mid_column']['browse'] = array(
     '#type' => 'markup',
     '#markup' => '<p>' . l(t('Browse all newspapers'), 'islandora/object/uofm:libraries') . '</p>',
   );
-  $form['right_column']['date_text'] = array(
+  $f['right_column']['date_text'] = array(
     '#type' => 'container',
     '#attributes' => array('class' => array('date-limiter')),
     '#prefix' => '<p class="label">' . t('Limit to a date range') . '</p>',
     '#suffix' => '<p>Format (1900/05/23)</p>',
   );
-  $form['right_column']['date_text']['date_from'] = array(
+  $f['right_column']['date_text']['date_from'] = array(
     '#type' => 'textfield',
     '#title' => t('from'),
     '#size' => 10,
     '#suffix' => '<span class="date-spacer">  ' . t('-') . '  </span>',
   );
-  $form['right_column']['date_text']['date_to'] = array(
+  $f['right_column']['date_text']['date_to'] = array(
     '#type' => 'textfield',
     '#title' => t('to'),
     '#size' => 10,
   );
   if (isset($all_years) && count($all_years) > 0) {
-    $form['right_column']['date_range_low'] = array(
+    $f['right_column']['date_range_low'] = array(
       '#type' => 'hidden',
       '#value' => $all_years['min'],
     );
-    $form['right_column']['date_range_high'] = array(
+    $f['right_column']['date_range_high'] = array(
       '#type' => 'hidden',
       '#value' => $all_years['max'],
     );

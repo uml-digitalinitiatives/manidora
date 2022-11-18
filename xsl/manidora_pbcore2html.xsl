@@ -355,7 +355,7 @@ and not(./preceding-sibling::node()//pb:contributorRole = descendant-or-self::pb
   </xsl:template>
 
   <xsl:template match='pb:rightsSummary'>
-     <xsl:value-of select="text()"/>
+     <xsl:apply-templates select="text()" mode="parseLinks"/>
   </xsl:template>
 
   <xsl:template match='pb:rightsLink'>

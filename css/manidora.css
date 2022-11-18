@@ -46,7 +46,7 @@
     clear:left;
 }
 
-#manidora-newspaper-search-form > div {
+#manidora-newspaper-search-form .column-container {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -126,7 +126,7 @@
 }
 
 @media only screen and (max-width: 900px) {
-    #manidora-newspaper-search-form > div {
+    #manidora-newspaper-search-form .column-container {
         flex-direction: column;
     }
 

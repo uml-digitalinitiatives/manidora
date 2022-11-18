@@ -101,11 +101,11 @@ function manidora_newspaper_search_form($form, &$form_state) {
         '#type' => 'container',
         '#attributes' => array('class' => array('column-split-25')),
       ),
-      'submit' => array(
-        '#type' => 'submit',
-        '#value' => t('Search'),
-        '#submit' => array('manidora_newspaper_search_form_submit'),
-      ),
+    ),
+    'submit' => array(
+      '#type' => 'submit',
+      '#value' => t('Search'),
+      '#submit' => array('manidora_newspaper_search_form_submit'),
     ),
   );
   

@@ -46,27 +46,31 @@
     clear:left;
 }
 
+#manidora-newspaper-search-form .column-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
 #manidora-newspaper-search-form .column-split-50,
 #manidora-newspaper-search-form .column-split-25 {
-    float:left;
-    overflow:hidden;
     margin-right: 5px;
 }
 #manidora-newspaper-search-form .column-split-50 {
-    width:48%;
+    flex-basis: 48%;
 }
 #manidora-newspaper-search-form .column-split-25 {
-    width: 23%;
+    flex-basis: 23%;
 }
-
-
 #manidora-newspaper-search-form .form-item-titles {
   margin-bottom: 5px;
 }
+
 #edit-titles {
   border: 1px solid black;
   background-color: #fff;
   padding: 4px;
+  max-height: 30em;
+  overflow-y: scroll;
 }
 .without-words-suffix {
     font-size: 0.78em;
@@ -123,3 +127,17 @@
     content: ' |';
 }
 
+@media only screen and (max-width: 900px) {
+    #manidora-newspaper-search-form .column-container {
+        flex-direction: column;
+    }
+
+    #manidora-newspaper-search-form .column-split-50, 
+    #manidora-newspaper-search-form .column-split-25 {
+        flex-basis: 100%;
+        padding-left: 3px;
+    }
+    #manidora-newspaper-search-form input.form-submit {
+        width: 100%;
+    }
+}

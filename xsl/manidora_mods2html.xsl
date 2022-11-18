@@ -1007,7 +1007,9 @@
   <!-- do text filtering to remove specific characters -->
   <!-- 8203 - zero-length space -->
   <xsl:template match="text()" mode="filter">
-    <xsl:value-of select="translate(., '&#8203;', '')"/>
+    <xsl:call-template name="parseLinks">
+      <xsl:with-param name="text" select="translate(., '&#8203;', '')"/>
+    </xsl:call-template>
   </xsl:template>
 
   <!-- Delete text which is not explicitly output. -->

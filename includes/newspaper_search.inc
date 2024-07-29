@@ -67,12 +67,14 @@ function manidora_newspaper_search_form($form, &$form_state) {
           drupal_set_message(check_plain(t('Error searching Solr index')) . ' ' . $e->getMessage(), 'error', FALSE);
         }
 
-        $tmpobjects[$doc['PID']] .= ' (' . substr($years['min'], 0, 4) . '-' . substr($years['max'], 0, 4) . ')';
-        if (substr($years['min'], 0, 4) < $all_years['min']) {
-          $all_years['min'] = substr($years['min'], 0, 4);
-        }
-        if (substr($years['max'], 0, 4) > $all_years['max']) {
-          $all_years['max'] = substr($years['max'], 0, 4);
+        if (isset($years['min']) && isset($years['max'])) {
+          $tmpobjects[$doc['PID']] .= ' (' . substr($years['min'], 0, 4) . '-' . substr($years['max'], 0, 4) . ')';
+          if (substr($years['min'], 0, 4) < $all_years['min']) {
+            $all_years['min'] = substr($years['min'], 0, 4);
+          }
+          if (substr($years['max'], 0, 4) > $all_years['max']) {
+            $all_years['max'] = substr($years['max'], 0, 4);
+          }
         }
       }
     }
